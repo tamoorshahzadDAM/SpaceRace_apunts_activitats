@@ -1,11 +1,13 @@
 package cat.xtec.ioc.helpers;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
+import cat.xtec.ioc.objects.Bullet;
 import cat.xtec.ioc.objects.Spacecraft;
 import cat.xtec.ioc.screens.GameScreen;
 
@@ -17,6 +19,7 @@ public class InputHandler implements InputProcessor {
     private Spacecraft spacecraft;
     private GameScreen screen;
     private Vector2 stageCoord;
+    private Bullet bullet;
 
     private Stage stage;
 
@@ -31,6 +34,9 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
+        if (keycode ==Input.Keys.SPACE ){
+            bullet.bulletVisibile();
+        }
         return false;
     }
 

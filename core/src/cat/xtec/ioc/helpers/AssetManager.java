@@ -13,12 +13,13 @@ public class AssetManager {
 
     // Sprite Sheet
     public static Texture sheet;
+    public static Texture Bullet;
 
     // Nau i fons
     public static TextureRegion spacecraft, spacecraftDown, spacecraftUp, background;
 
     //disparo
-    public static TextureRegion disparo;
+    public static TextureRegion disparo, disparoBullet;
 
     // Asteroid
     public static TextureRegion[] asteroid;
@@ -41,8 +42,15 @@ public class AssetManager {
         sheet = new Texture(Gdx.files.internal("sheet.png"));
         sheet.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 
+        Bullet = new Texture(Gdx.files.internal("fonts/Bullet.png"));
+        Bullet.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+
         //sprites de el disparo
         disparo = new TextureRegion(sheet, 0,0,36,15);
+
+        //sprites de la Bala
+        disparoBullet = new TextureRegion(Bullet, 0,0,0,0);
+        disparoBullet.flip(false, true);
 
         // Sprites de la nau
         spacecraft = new TextureRegion(sheet, 0, 0, 36, 15);
