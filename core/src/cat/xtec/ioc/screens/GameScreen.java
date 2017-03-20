@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import cat.xtec.ioc.helpers.AssetManager;
 import cat.xtec.ioc.helpers.InputHandler;
 import cat.xtec.ioc.objects.Asteroid;
+import cat.xtec.ioc.objects.Bullet;
 import cat.xtec.ioc.objects.ScrollHandler;
 import cat.xtec.ioc.objects.Spacecraft;
 import cat.xtec.ioc.utils.Settings;
@@ -42,6 +43,8 @@ public class GameScreen implements Screen {
     // Encarregats de dibuixar elements per pantalla
     private ShapeRenderer shapeRenderer;
     private Batch batch;
+
+    private Bullet bullet;
 
     // Per controlar l'animació de l'explosió
     private float explosionTime = 0;
@@ -72,11 +75,21 @@ public class GameScreen implements Screen {
         spacecraft = new Spacecraft(Settings.SPACECRAFT_STARTX, Settings.SPACECRAFT_STARTY, Settings.SPACECRAFT_WIDTH, Settings.SPACECRAFT_HEIGHT);
         scrollHandler = new ScrollHandler();
 
+
+        bullet = new Bullet(Settings.SPACECRAFT_STARTX+40, Settings.SPACECRAFT_STARTY+5, 50, 20);
+
+
         // Afegim els actors a l'stage
         stage.addActor(scrollHandler);
         stage.addActor(spacecraft);
+
+        stage.addActor(bullet);
+
         // Donem nom a l'Actor
         spacecraft.setName("spacecraft");
+        bullet.setName("bullet");
+
+
 
         // Iniciem el GlyphLayout
         textLayout = new GlyphLayout();
@@ -88,6 +101,14 @@ public class GameScreen implements Screen {
         // Assignem com a gestor d'entrada la classe InputHandler
         Gdx.input.setInputProcessor(new InputHandler(this));
 
+    }
+
+    public Bullet getBullet() {
+        return bullet;
+    }
+
+    public void setBullet(Bullet bullet) {
+        this.bullet = bullet;
     }
 
     private void drawElements() {

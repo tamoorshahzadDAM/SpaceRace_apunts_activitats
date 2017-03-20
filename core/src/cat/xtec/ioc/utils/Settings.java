@@ -8,6 +8,7 @@ public class Settings {
 
     // Propietats de la nau
     public static float SPACECRAFT_VELOCITY = 50;
+    public static float BULLET_VELOCITY = 100;
 
     public static void setSpacecraftVelocity(float spacecraftVelocity) {
         SPACECRAFT_VELOCITY = spacecraftVelocity;
@@ -17,6 +18,9 @@ public class Settings {
         return SPACECRAFT_VELOCITY;
     }
 
+    public static float getBulletVelocity() {
+        return BULLET_VELOCITY;
+    }
 
     public static final int SPACECRAFT_WIDTH = 36;
     public static final int SPACECRAFT_HEIGHT = 15;

@@ -27,6 +27,7 @@ public class InputHandler implements InputProcessor {
 
         // Obtenim tots els elements necessaris
         this.screen = screen;
+        bullet = screen.getBullet();
         spacecraft = screen.getSpacecraft();
         stage = screen.getStage();
 
@@ -34,15 +35,20 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
-        if (keycode ==Input.Keys.SPACE ){
-            bullet.bulletVisibile();
-        }
-        return false;
-    }
+        if(keycode == Input.Keys.SPACE){
 
+            bullet.BulletVisible();
+            //bullet.goLeft();
+            return true;
+        }
+        return true;
+    }
     @Override
     public boolean keyUp(int keycode) {
-        return false;
+        if(keycode == Input.Keys.SPACE){
+            bullet.BulletInVisible();
+        }
+        return true;
     }
 
     @Override
