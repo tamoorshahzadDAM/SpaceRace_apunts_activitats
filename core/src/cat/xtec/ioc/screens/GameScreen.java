@@ -53,11 +53,14 @@ public class GameScreen implements Screen {
     private GlyphLayout textLayout;
     private GlyphLayout text;
 
-    private Label.LabelStyle textStyle;
-    private Label textLbl;
-
+    //Variable para contar puntos
     private int puntos;
 
+    /**
+     * Constructor
+     * @param prevBatch
+     * @param prevViewport
+     */
     public GameScreen(Batch prevBatch, Viewport prevViewport) {
 
         // Iniciem la música
@@ -68,26 +71,24 @@ public class GameScreen implements Screen {
 
         // Creem l'stage i assginem el viewport
         stage = new Stage(prevViewport, prevBatch);
-
         batch = stage.getBatch();
 
         // Creem la nau i la resta d'objectes
         spacecraft = new Spacecraft(Settings.SPACECRAFT_STARTX, Settings.SPACECRAFT_STARTY, Settings.SPACECRAFT_WIDTH, Settings.SPACECRAFT_HEIGHT);
         scrollHandler = new ScrollHandler();
-
-
+        //Se crea el bullet
         bullet = new Bullet(Settings.SPACECRAFT_STARTX+40, Settings.SPACECRAFT_STARTY+5, 50, 20);
 
 
         // Afegim els actors a l'stage
         stage.addActor(scrollHandler);
         stage.addActor(spacecraft);
-
         stage.addActor(bullet);
 
         // Donem nom a l'Actor
         spacecraft.setName("spacecraft");
         bullet.setName("bullet");
+        //asteroid.setName("asteroid");
 
 
 
@@ -95,7 +96,7 @@ public class GameScreen implements Screen {
         textLayout = new GlyphLayout();
         textLayout.setText(AssetManager.font, "Are you\nready?");
 
-
+        //Estado actual
         currentState = GameState.READY;
 
         // Assignem com a gestor d'entrada la classe InputHandler
@@ -103,6 +104,7 @@ public class GameScreen implements Screen {
 
     }
 
+    //Getters y setters
     public Bullet getBullet() {
         return bullet;
     }
@@ -111,6 +113,9 @@ public class GameScreen implements Screen {
         this.bullet = bullet;
     }
 
+    /**
+     * Dibuja los elementos
+     */
     private void drawElements() {
 
         // Recollim les propietats del Batch de l'Stage
@@ -129,10 +134,14 @@ public class GameScreen implements Screen {
         // Pintem la nau
         shapeRenderer.rect(spacecraft.getX(), spacecraft.getY(), spacecraft.getWidth(), spacecraft.getHeight());
 
+        //Pintem bullet
+        shapeRenderer.rect(bullet.getX(), bullet.getY(), bullet.getWidth(), bullet.getHeight());
+
         // Recollim tots els Asteroid
         ArrayList<Asteroid> asteroids = scrollHandler.getAsteroids();
         Asteroid asteroid;
 
+        //Bucle para tamaño de asteroides
         for (int i = 0; i < asteroids.size(); i++) {
 
             asteroid = asteroids.get(i);
@@ -156,11 +165,16 @@ public class GameScreen implements Screen {
     }
 
 
+    //Methodos override
     @Override
     public void show() {
 
     }
 
+    /**
+     * Methodo override de render
+     * @param delta
+     */
     @Override
     public void render(float delta) {
 
@@ -186,6 +200,9 @@ public class GameScreen implements Screen {
 
     }
 
+    /**
+     * Methodo update, que se actualiza y prepara los objetos
+     */
     private void updateReady() {
 
         // Dibuixem el text al centre de la pantalla
@@ -200,20 +217,26 @@ public class GameScreen implements Screen {
 
     }
 
+    /**
+     * MethodoupdateRunnimg, va actualizado  ejecucion de juego
+     * @param delta
+     */
     private void updateRunning(float delta) {
 
         text= new GlyphLayout();
+        //Muestra puntos al final
         text.setText(AssetManager.font, "Puntos:");
 
-
-
         stage.act(delta);
+        //Va sumando los puntos
         puntos = puntos + 1;
 
         //textStyle = new Label.LabelStyle(AssetManager.font, null);
 
         String cadena = String.valueOf(puntos/60);
         //textLayout.setText(AssetManager.font, "puntos: "+cadena);
+
+        //si hay colecion entre spacecraft y asteroides entonces se acaba el juego y muestra un mensajey los puntos
         if (scrollHandler.collides(spacecraft)) {
 
             //textLbl = new Label("Puntos: " + cadena, textStyle);
@@ -224,8 +247,23 @@ public class GameScreen implements Screen {
             textLayout.setText(AssetManager.font, "GAME OVER \n puntos: "+cadena);
             currentState = GameState.GAMEOVER;
         }
+/**
+        //Si hay colecion entre bullet y asteroides mientras el bullet esta visible .
+        if (scrollHandler.collidesBullet(bullet) && bullet.getEstado()==0) {
+
+            // Si hi ha hagut col·lisió: Reproduïm l'explosió i posem l'estat a GameOver
+            AssetManager.explosionSound.play();
+            stage.getRoot().findActor("bullet").remove();
+            stage.getRoot().findActor("asteroid").remove();
+
+        }
+*/
     }
 
+    /**
+     * Methodo que actualiza el fin de juego.
+     * @param delta
+     */
     private void updateGameOver(float delta) {
         stage.act(delta);
 
@@ -233,12 +271,18 @@ public class GameScreen implements Screen {
         AssetManager.font.draw(batch, textLayout, (Settings.GAME_WIDTH - textLayout.width) / 2, (Settings.GAME_HEIGHT - textLayout.height) / 2);
         // Si hi ha hagut col·lisió: Reproduïm l'explosió i posem l'estat a GameOver
         batch.draw(AssetManager.explosionAnim.getKeyFrame(explosionTime, false), (spacecraft.getX() + spacecraft.getWidth() / 2) - 32, spacecraft.getY() + spacecraft.getHeight() / 2 - 32, 64, 64);
+
+        //batch.draw(AssetManager.explosionAnim.getKeyFrame(explosionTime, false), (bullet.getX() + bullet.getWidth() / 2) - 32, bullet.getY() + bullet.getHeight() / 2 - 32, 64, 64);
+
         batch.end();
 
         explosionTime += delta;
 
     }
 
+    /**
+     * Methodo reset
+     */
     public void reset() {
 
         // Posem el text d'inici
@@ -247,12 +291,14 @@ public class GameScreen implements Screen {
         // Cridem als restart dels elements.
         spacecraft.reset();
         scrollHandler.reset();
+        bullet.reset();
 
         // Posem l'estat a 'Ready'
         currentState = GameState.READY;
 
         // Afegim la nau a l'stage
         stage.addActor(spacecraft);
+        stage.addActor(bullet);
 
         // Posem a 0 les variables per controlar el temps jugat i l'animació de l'explosió
         explosionTime = 0.0f;
@@ -260,6 +306,11 @@ public class GameScreen implements Screen {
     }
 
 
+    /**
+     * Methodos override para resize
+     * @param width
+     * @param height
+     */
     @Override
     public void resize(int width, int height) {
 
@@ -285,6 +336,7 @@ public class GameScreen implements Screen {
 
     }
 
+    //Getter y setters
     public Spacecraft getSpacecraft() {
         return spacecraft;
     }

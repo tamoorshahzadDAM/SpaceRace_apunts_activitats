@@ -33,23 +33,36 @@ public class InputHandler implements InputProcessor {
 
     }
 
+    /**
+     * MEthodo le agrego el boton de espacio para tirar la bala, si el boton esta pulaso el estado
+     * de la bala es invisible
+     * @param keycode
+     * @return
+     */
     @Override
     public boolean keyDown(int keycode) {
         if(keycode == Input.Keys.SPACE){
 
-            bullet.BulletVisible();
-            //bullet.goLeft();
+            bullet.BulletInVisible();
             return true;
         }
         return true;
     }
+
+    /**
+     * MEthodo que pone visible a la bala, despues de pulsar la tecla de espacio.
+     * @param keycode
+     * @return
+     */
     @Override
     public boolean keyUp(int keycode) {
         if(keycode == Input.Keys.SPACE){
-            bullet.BulletInVisible();
+            bullet.BulletVisible();
         }
         return true;
     }
+
+    //Methodos override
 
     @Override
     public boolean keyTyped(char character) {

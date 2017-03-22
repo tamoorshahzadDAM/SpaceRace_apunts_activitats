@@ -42,12 +42,13 @@ public class AssetManager {
         sheet = new Texture(Gdx.files.internal("sheet.png"));
         sheet.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 
+        //Cargo les tecturas y foto de la bala
         bullet = new Texture(Gdx.files.internal("fonts/Bullet.png"));
         bullet.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 
         //sprites de el disparo
-        disparo = new TextureRegion(bullet, 125,253,715,250);
-        disparo.flip(false,true);
+        disparo = new TextureRegion(bullet, 0,0,2200,1600);
+        //disparo.flip(false,true);
 
         //sprites de la Bala
         disparoBullet = new TextureRegion(bullet, 0,0,0,0);
@@ -55,11 +56,13 @@ public class AssetManager {
 
         // Sprites de la nau
         spacecraft = new TextureRegion(sheet, 0, 0, 36, 15);
-        spacecraft.flip(false, true);
+        //spacecraft.flip(false, true);
 
+        //nau para arriba
         spacecraftUp = new TextureRegion(sheet, 36, 0, 36, 15);
         spacecraftUp.flip(false, true);
 
+        //nau para abajo
         spacecraftDown = new TextureRegion(sheet, 72, 0, 36, 15);
         spacecraftDown.flip(false, true);
 

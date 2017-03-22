@@ -19,6 +19,7 @@ import cat.xtec.ioc.utils.Settings;
 
 public class SplashScreen implements Screen {
 
+    //objetos necesarios
     private Stage stage;
     private SpaceRace game;
 
@@ -29,6 +30,10 @@ public class SplashScreen implements Screen {
     private Container contFacil, contNormal, contDificil;
 
 
+    /**
+     * Constructor
+     * @param game
+     */
     public SplashScreen(SpaceRace game) {
 
         this.game = game;
@@ -50,8 +55,9 @@ public class SplashScreen implements Screen {
 
         // Creem l'estil de l'etiqueta i l'etiqueta
         textStyle = new Label.LabelStyle(AssetManager.font, null);
-       // textStyle2 = new Label.LabelStyle(AssetManager.font, null);
-        //textStyle3 = new Label.LabelStyle(AssetManager.font, null);
+
+        //Añado el modo de juegos, facil normal o dificil. el qie eliga el usuario
+        // segun eso empecara el juego
         textLbl1 = new Label("Facil", textStyle);
         textLbl2 = new Label("Normal", textStyle);
         textLbl3 = new Label("Dificil", textStyle);
@@ -76,15 +82,13 @@ public class SplashScreen implements Screen {
 
 
         // Afegim les accions de escalar: primer es fa gran i després torna a l'estat original ininterrompudament
-       // contFacil.addAction(Actions.repeat(RepeatAction.FOREVER, Actions.sequence(Actions.scaleTo(1.5f, 1.5f, 1), Actions.scaleTo(1, 1, 1))));
+
         contFacil.setName("Facil");
         stage.addActor(contFacil);
 
-      //  contNormal.addAction(Actions.repeat(RepeatAction.FOREVER, Actions.sequence(Actions.scaleTo(1.5f, 1.5f, 1), Actions.scaleTo(1, 1, 1))));
         contNormal.setName("Normal");
         stage.addActor(contNormal);
 
-      //  contDificil.addAction(Actions.repeat(RepeatAction.FOREVER, Actions.sequence(Actions.scaleTo(1.5f, 1.5f, 1), Actions.scaleTo(1, 1, 1))));
         contDificil.setName("Dificil");
         stage.addActor(contDificil);
 
@@ -93,16 +97,25 @@ public class SplashScreen implements Screen {
         float y = Settings.GAME_HEIGHT / 2 + textLbl1.getHeight();
         spacecraft.addAction(Actions.repeat(RepeatAction.FOREVER, Actions.sequence(Actions.moveTo(0 - spacecraft.getWidth(), y), Actions.moveTo(Settings.GAME_WIDTH, y, 5))));
 
+        //Agrega el spacecraft
         stage.addActor(spacecraft);
 
 
     }
 
+    /**
+     * Methodo override de mostrar
+     */
     @Override
     public void show() {
 
     }
 
+    /**
+     * Methodo override de render, que le indico los modos de juego, segun el que eliga el usuario,
+     * el juego se iniciara con unos ajustos o con otros.
+     * @param delta
+     */
     @Override
     public void render(float delta) {
 
@@ -112,10 +125,11 @@ public class SplashScreen implements Screen {
 
         // Si es fa clic en la pantalla, canviem la pantalla
         if (Gdx.input.isTouched()) {
-                   // vector = new Vector3 (Gdx.input.getX(), Gdx.input.getY(), 0);
-                   // stage.getCamera().unproject(vector);
+
+            //Vector para saber el tamaño de la pantalla y poder elegir modo de juego
             vector = new Vector3 (Gdx.input.getX(), Gdx.input.getY(), 0);
 
+            //Si es modo facil hacetodo lo que esta indicado
             if(vector.x >= contFacil.getRight()-55 && vector.x <= contFacil.getRight()+80 && vector.y >= contFacil.getTop()&& vector.y <= contFacil.getTop()+35) {
                 Gdx.app.log("coordenada Facil has clickado en " + Float.toString(vector.x), Float.toString(contFacil.getRight()));
 
@@ -126,6 +140,7 @@ public class SplashScreen implements Screen {
                 dispose();
             }
 
+            //En el caso de modo normal
             if(vector.x >= contNormal.getRight() +50 && vector.x <= contNormal.getRight()+180 && vector.y >= contNormal.getTop() && vector.y <= contNormal.getTop()+35){
                 Gdx.app.log ("coordenada Normal has clickado en " + Float.toString (vector.x), Float.toString(contNormal.getRight()));
                 Settings.setSpacecraftVelocity(90);
@@ -135,6 +150,7 @@ public class SplashScreen implements Screen {
                 dispose();
             }
 
+            //En el caso de modo dificil
             if(vector.x >= contDificil.getRight()+150 && vector.x <= contDificil.getRight()+250 && vector.y >= contDificil.getTop() && vector.y <= contDificil.getTop()+35){
                 Gdx.app.log ("coordenada Dificil has clickado en " + Float.toString (vector.x), Float.toString(contDificil.getRight()));
                 Settings.setSpacecraftVelocity(160);
@@ -151,6 +167,7 @@ public class SplashScreen implements Screen {
 
     }
 
+    //Methodoes overrides
     @Override
     public void resize(int width, int height) {
 

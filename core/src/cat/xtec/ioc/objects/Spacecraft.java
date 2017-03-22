@@ -42,20 +42,28 @@ public class Spacecraft extends Actor {
         setTouchable(Touchable.enabled);
     }
 
+    /**
+     * Methodo act
+     *
+     * @param delta
+     */
     public void act(float delta) {
 
         // Movem la spacecraft depenent de la direcció controlant que no surti de la pantalla
         switch (direction) {
+            //si esta subiendo
             case SPACECRAFT_UP:
                 if (this.position.y - Settings.SPACECRAFT_VELOCITY * delta >= 0) {
                     this.position.y -= Settings.SPACECRAFT_VELOCITY * delta;
                 }
                 break;
+            //si esta bajando
             case SPACECRAFT_DOWN:
                 if (this.position.y + height + Settings.SPACECRAFT_VELOCITY * delta <= Settings.GAME_HEIGHT) {
                     this.position.y += Settings.SPACECRAFT_VELOCITY * delta;
                 }
                 break;
+            //si va recto
             case SPACECRAFT_STRAIGHT:
                 break;
         }
@@ -82,6 +90,10 @@ public class Spacecraft extends Actor {
         return height;
     }
 
+    public Rectangle getCollisionRect() {
+        return collisionRect;
+    }
+
     // Canviem la direcció de la spacecraft: Puja
     public void goUp() {
         direction = SPACECRAFT_UP;
@@ -102,6 +114,7 @@ public class Spacecraft extends Actor {
 
         switch (direction) {
 
+            //En cada caso se llama a assetmanager segun el caso.
             case SPACECRAFT_STRAIGHT:
                 return AssetManager.spacecraft;
             case SPACECRAFT_UP:
@@ -113,6 +126,9 @@ public class Spacecraft extends Actor {
         }
     }
 
+    /**
+     * Methodo reset
+     */
     public void reset() {
 
         // La posem a la posició inicial i a l'estat normal
@@ -122,13 +138,17 @@ public class Spacecraft extends Actor {
         collisionRect = new Rectangle();
     }
 
+    /**
+     * ovveride de dibujar la nau
+     *
+     * @param batch
+     * @param parentAlpha
+     */
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
         batch.draw(getSpacecraftTexture(), position.x, position.y, width, height);
     }
 
-    public Rectangle getCollisionRect() {
-        return collisionRect;
-    }
+
 }

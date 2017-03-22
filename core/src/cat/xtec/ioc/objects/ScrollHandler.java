@@ -43,7 +43,7 @@ public class ScrollHandler extends Group {
         float newSize = Methods.randomFloat(Settings.MIN_ASTEROID, Settings.MAX_ASTEROID) * 34;
 
         // Afegim el primer Asteroid a l'Array i al grup
-        Asteroid asteroid = new Asteroid(Settings.GAME_WIDTH, r.nextInt(Settings.GAME_HEIGHT - (int) newSize), newSize, newSize, Settings.ASTEROID_SPEED);
+        Asteroid asteroid = new Asteroid(Settings.GAME_WIDTH, r.nextInt(Settings.GAME_HEIGHT - (int) newSize), newSize, newSize, Settings.ASTEROID_SPEED, true);
         asteroids.add(asteroid);
         addActor(asteroid);
 
@@ -52,7 +52,7 @@ public class ScrollHandler extends Group {
             // Creem la mida al·leatòria
             newSize = Methods.randomFloat(Settings.MIN_ASTEROID, Settings.MAX_ASTEROID) * 34;
             // Afegim l'asteroid.
-            asteroid = new Asteroid(asteroids.get(asteroids.size() - 1).getTailX() + Settings.ASTEROID_GAP, r.nextInt(Settings.GAME_HEIGHT - (int) newSize), newSize, newSize, Settings.ASTEROID_SPEED);
+            asteroid = new Asteroid(asteroids.get(asteroids.size() - 1).getTailX() + Settings.ASTEROID_GAP, r.nextInt(Settings.GAME_HEIGHT - (int) newSize), newSize, newSize, Settings.ASTEROID_SPEED, true);
             // Afegim l'asteroide a l'ArrayList
             asteroids.add(asteroid);
             // Afegim l'asteroide al grup d'actors
@@ -61,6 +61,10 @@ public class ScrollHandler extends Group {
 
     }
 
+    /**
+     * Methodo override para act
+     * @param delta
+     */
     @Override
     public void act(float delta) {
         super.act(delta);
@@ -86,6 +90,11 @@ public class ScrollHandler extends Group {
         }
     }
 
+    /**
+     * Methodo para saber colecion entre nau y asteroide
+     * @param nau
+     * @return
+     */
     public boolean collides(Spacecraft nau) {
 
         // Comprovem les col·lisions entre cada asteroid i la nau
@@ -97,6 +106,25 @@ public class ScrollHandler extends Group {
         return false;
     }
 
+    /**
+     * Methodo para saber coleciones entre bullet y asteroide.
+     * @param bullet
+     * @return
+     */
+    public boolean collidesBullet(Bullet bullet) {
+
+        // Comprovem les col·lisions entre cada asteroid i la nau
+        for (Asteroid asteroid : asteroids) {
+            if (asteroid.collidesBullet(bullet) && asteroid.isChoca()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Methodo reset
+     */
     public void reset() {
 
         // Posem el primer asteroid fora de la pantalla per la dreta
@@ -109,6 +137,10 @@ public class ScrollHandler extends Group {
         }
     }
 
+    /**
+     * MEthodo get de asteroide.
+     * @return
+     */
     public ArrayList<Asteroid> getAsteroids() {
         return asteroids;
     }

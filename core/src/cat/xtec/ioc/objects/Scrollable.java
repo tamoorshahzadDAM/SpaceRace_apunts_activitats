@@ -5,12 +5,21 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class Scrollable extends Actor {
 
+    // Paràmetres de la Scrollable
     protected Vector2 position;
     protected float velocity;
     protected float width;
     protected float height;
     protected boolean leftOfScreen;
 
+    /**
+     * Constructor
+     * @param x
+     * @param y
+     * @param width
+     * @param height
+     * @param velocity
+     */
     public Scrollable(float x, float y, float width, float height, float velocity) {
         position = new Vector2(x, y);
         this.velocity = velocity;
@@ -20,6 +29,10 @@ public class Scrollable extends Actor {
 
     }
 
+    /**
+     * Methodo act
+     * @param delta
+     */
     public void act(float delta) {
 
         super.act(delta);
@@ -32,11 +45,16 @@ public class Scrollable extends Actor {
         }
     }
 
+    /**
+     * Methodo reset
+     * @param newX
+     */
     public void reset(float newX) {
         position.x = newX;
         leftOfScreen = false;
     }
 
+    //Getter y setters
     public boolean isLeftOfScreen() {
         return leftOfScreen;
     }

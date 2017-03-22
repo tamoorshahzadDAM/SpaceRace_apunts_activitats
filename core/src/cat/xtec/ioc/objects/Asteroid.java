@@ -19,9 +19,12 @@ public class Asteroid extends Scrollable {
     Random r;
 
     int assetAsteroid;
+    boolean choca;
 
-    public Asteroid(float x, float y, float width, float height, float velocity) {
+    public Asteroid(float x, float y, float width, float height, float velocity, boolean choca) {
         super(x, y, width, height, velocity);
+
+        this.choca = choca;
 
         // Creem el cercle
         collisionCircle = new Circle();
@@ -31,6 +34,8 @@ public class Asteroid extends Scrollable {
         assetAsteroid = r.nextInt(15);
 
         setOrigin();
+
+
 
         // Rotacio
         RotateByAction rotateAction = new RotateByAction();
@@ -49,11 +54,29 @@ public class Asteroid extends Scrollable {
 
     }
 
+    /**
+     * Methodo boolean para saber si se choca la bala con asteroide o no
+     * @return
+     */
+    public boolean isChoca() {
+        return choca;
+    }
+
+    /**
+     * Methodo set de varibale choca
+     * @param choca
+     */
+    public void setChoca(boolean choca) {
+        this.choca = choca;
+    }
+
     public void setOrigin() {
 
         this.setOrigin(width/2 + 1, height/2);
 
     }
+
+    //Methodos override
 
     @Override
     public void act(float delta) {
@@ -75,6 +98,9 @@ public class Asteroid extends Scrollable {
         // La posició serà un valor aleatòri entre 0 i l'alçada de l'aplicació menys l'alçada
         position.y =  new Random().nextInt(Settings.GAME_HEIGHT - (int) height);
 
+        this.setVisible(true);
+        this.setChoca(true);
+
         assetAsteroid = r.nextInt(15);
         setOrigin();
     }
@@ -95,4 +121,18 @@ public class Asteroid extends Scrollable {
         }
         return false;
     }
+
+
+    /**
+     * Methodo que devuelve un true se hay colecion entre bullet y asteroides.
+     * @param bullet
+     * @return
+     */
+    public boolean collidesBullet(Bullet bullet) {
+        if (position.x <= bullet.getX() + bullet.getWidth()) {
+            return (Intersector.overlaps(collisionCircle, bullet.getCollisionRect()));
+        }
+        return false;
+    }
+
 }

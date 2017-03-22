@@ -9,6 +9,8 @@ public class Background extends Scrollable {
         super(x, y, width, height, velocity);
     }
 
+    //Methodo override
+
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
